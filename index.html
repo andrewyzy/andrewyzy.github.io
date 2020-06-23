@@ -21,13 +21,11 @@
     <p>Autor: André Brasil Vieira Wyzykowski (doutorando, UFBA).</p> 
     <p><b>Atenção! Leia o roteiro explicativo:</b></p>
     
-    <h4>1. Análise as duas imagens abaixo. Estas podem ser impressões digitais de <b>pessoas reais</b>, ou impressões digitais <b>falsas</b> (geradas de forma sintética). </h4>
-    <h4>2. Selecione as imagens que você acredita serem <b>FALSAS</b> (sintéticas).</h4>
-    <h4>3. Você poderá selecionar: <b>uma</b> delas como falsa, <b>ambas</b> como falsas ou <b>não marcar</b> nenhuma imagem.</h4>
-    <h4>4. Se você não marcar nenhuma imagem como falsa, <b>aperte o botão enviar de qualquer forma.</b></h4>
-    <h4>5. Após você apertar enviar, novas imagens irão aparecer. Continue selecionando as falsas.</h4>
+    <h4>1. Análise as 10 imagens abaixo. Existem 5 impressões digitais de <b>pessoas reais</b>, e 5 impressões digitais <b>falsas</b> (geradas de forma sintética). </h4>
+    <h4>2. Selecione 5 imagens que você acredita serem <b>FALSAS</b> (sintéticas).</h4>
+    <h4>3. Após você apertar enviar, aguarde até novas imagens aparecer. Continue selecionando as falsas até concluir o experimento.</h4>
 
-    <p><font color="red">Você tem <span id="time">05:00</span> minutos para terminar o experimento!</font></h4>
+    <p><font color="red">Página <span id="pagina">1</span> de 20</font></h4>
     <p>Utilize <b>todo o tempo disponível</b> para selecionar o maior número de imagens falsas.</h4>
 
   </div>
@@ -35,17 +33,19 @@
 
 <label for="nome_form">Insira seu nome completo: </label>
 <input type="text" class="form-control" id="myText" aria-describedby="emailHelp" placeholder="Digite seu nome completo">
+<br>
 
 
 
 
 <div class="container-fluid">
+    <button type="button" class="btn btn-primary btn-lg btn-block">Enviar</button>
+    <br>
 
-        <select id="cont" multiple="multiple" data-limit='2'>
+        <select id="cont" multiple="multiple" data-limit='5'>
 
           </select>
 
-    <button type="button" class="btn btn-primary btn-lg btn-block">Enviar</button>
 
 </div>
 
@@ -62,11 +62,6 @@ function startTimer(duration, display) {
 
         display.textContent = minutes + ":" + seconds;
 
-        if((minutes == 0) && (seconds == 0))
-        {
-          alert("Obrigado por participar do experimento!");
-          window.location.href = "http://www.google.com.br";
-        }
 
         if (--timer < 0) {
             timer = duration;
@@ -75,9 +70,9 @@ function startTimer(duration, display) {
 }
 
 window.onload = function () {
-    var fiveMinutes = 60 * 5,
-        display = document.querySelector('#time');
-    startTimer(fiveMinutes, display);
+   pagina_count = 1;
+  display_pagina = document.querySelector('#pagina');
+
 };
 
 var img_a = Math.random();
@@ -101,93 +96,147 @@ var imgData={
 }
 var container = $('#cont');
 
+function sorteio() {
+  value = Math.random();
+  if(value >= 0.5)
+  {
+     value = 1;
+  }
+  else
+  {
+     value = 0;
+  }
+  return value;
+}
+
 function inicio() {
+  display_pagina = document.querySelector('#pagina');
+  display_pagina.textContent = pagina_count;
+
 
   container.empty();
-   
-  img_a = Math.random();
-  img_b = Math.random();
-
-  if(img_a >= 0.5)
-  {
-     console.log("IMG A: Imagem fake");
-     img_a = 1;
-  }
-  else
-  {
-     console.log("IMG A: Imagem real");
-     img_a = 0;
-  }
-
-
-  if(img_b < 0.5)
-  {
-     console.log("IMG B: Imagem fake");
-     img_b = 1;
-  }
-  else
-  {
-    console.log("IMG B: Imagem real");
-     img_b = 0;
-  }
-
-
   var real_path = "https://raw.githubusercontent.com/andrewyzy/experiment/master/imgs_real/";
-  var fake_path = "https://raw.githubusercontent.com/andrewyzy/experiment/master/imgs_final/";
+  var fake_path = "https://raw.githubusercontent.com/andrewyzy/experiment/master/imgs_l3sfv2/";
 
-  img_a_path = "";
-  img_b_path = "";
-  filename_a = "";
-  filename_b = "";
 
-  if(img_a == 0){
-    var rand = Math.floor(Math.random()*1479)+1;
-    img_a_path+=real_path;
-    filename_a = rand+".jpg";
+  var imagens = [];
+  var imagens_names = [];
+  var name_files = [];
 
-    img_a_path+= filename_a;
-    console.log(img_a_path);
+
+  for (var i = 0; i <= 9; i++) {
+    //sorteio_imagens.push(sorteio())
+    imagens.push(i)
   }
-  else
-  {
-    var rand = Math.floor(Math.random()*599)+1;
-    var rand_1 = Math.floor(Math.random()*9);
-    img_a_path+=fake_path;
-    filename_a = rand+"_"+rand_1+".png";
 
-    img_a_path+= filename_a
-    console.log(img_a_path);
+  for (var i = 0; i <= 4; i++) {
+    var rand = Math.floor(Math.random()*148)+1;
+    var rand_m = Math.floor(Math.random()*2)+1;
+    var rand_1 = Math.floor(Math.random()*5)+1;
+    filename_a = rand+"_"+rand_m+"_"+rand_1+".png";
+    name_files.push(filename_a)
+
+    img_path = fake_path+filename_a
+
+    imagens_names.push(img_path);
+  }
+
+  for (var i = 5; i <= 9; i++) {
+    var rand = Math.floor(Math.random()*1479)+1;
+    filename_b = rand+".jpg";
+    name_files.push(filename_b)
+    img_path_2 = real_path+filename_b
+
+    imagens_names.push(img_path_2);
+  }
+  console.log(imagens_names)
+
+  var var_size = 10
+  var imgs= [];
+  for (var i = 0; i <= 9; i++) {
+      value = Math.floor(Math.random()*var_size)+1;
+      imgs[i] = imagens[value];
+      var pos = value, n = 1;
+      var itensRemovidos = imagens.splice(pos, n); 
+
+      var_size--;
+  }
+  for(var i=0; i<=9; i++) {
+        if(imgs[i] == undefined)
+        {
+          imgs[i] = 0;
+        }
   }
   
-  if(img_b == 0){
-    var rand = Math.floor(Math.random()*1479)+1;
-    img_b_path+=real_path;
-    filename_b = rand+".jpg";
 
-    img_b_path+= filename_b;
-    console.log(img_b_path);
-  }
-  else
-  {
-    var rand = Math.floor(Math.random()*599)+1;
-    var rand_1 = Math.floor(Math.random()*9);
-    img_b_path+=fake_path;
-    filename_b = rand+"_"+rand_1+".png";
+  console.log(imgs)
 
-    img_b_path+= filename_b;
-    console.log(img_b_path);
-  }
+  var t0, t1, t2, t3, t4, t5, t6, t7, t8, t9;
+
+  if(imgs[0]<=4) t0 = 0; else t0 = 1;
+  if(imgs[1]<=4) t1 = 0; else t1 = 1;
+  if(imgs[2]<=4) t2 = 0; else t2 = 1;
+  if(imgs[3]<=4) t3 = 0; else t3 = 1;
+  if(imgs[4]<=4) t4 = 0; else t4 = 1;
+  if(imgs[5]<=4) t5 = 0; else t5 = 1;
+  if(imgs[6]<=4) t6 = 0; else t6 = 1;
+  if(imgs[7]<=4) t7 = 0; else t7 = 1;
+  if(imgs[8]<=4) t8 = 0; else t8 = 1;
+  if(imgs[9]<=4) t9 = 0; else t9 = 1;
+
+  console.log(t0);
+
 
   imgData={
+        "0": {
+            "url": imagens_names[imgs[0]],
+            "name": "0",
+            "type": t0,
+        },
         "1": {
-            "url": img_a_path,
+            "url": imagens_names[imgs[1]],
             "name": "1",
-            "type": img_a,
+            "type": t1,
         },
         "2": {
-            "url": img_b_path,
+            "url": imagens_names[imgs[2]],
             "name": "2",
-            "type": img_b,
+            "type": t2,
+        },
+        "3": {
+            "url": imagens_names[imgs[3]],
+            "name": "3",
+            "type": t3,
+        },
+        "4": {
+            "url": imagens_names[imgs[4]],
+            "name": "4",
+            "type": t4,
+        },
+        "5": {
+            "url": imagens_names[imgs[5]],
+            "name": "5",
+            "type": t5,
+        },
+        "6": {
+            "url": imagens_names[imgs[6]],
+            "name": "6",
+            "type": t6,
+        },
+        "7": {
+            "url": imagens_names[imgs[7]],
+            "name": "7",
+            "type": t7,
+        },
+        "8": {
+            "url": imagens_names[imgs[8]],
+            "name": "8",
+            "type": t8,
+        },
+        "9": {
+            "url": imagens_names[imgs[9]],
+            "name": "9",
+            "type": t9,
         }
   }
 
@@ -196,6 +245,9 @@ function inicio() {
         container.append($('<option data-img-src="'+imgData[i].url+'" data-img-label="Just an image!" value="'+imgData[i].name+'">'));
   }
   container.imagepicker();
+
+  return [imgs, name_files];
+  //return imgs;
 
  }
 
@@ -210,12 +262,18 @@ function inicio() {
 
 $(document).ready(function(){
 
-
-  inicio();
-
+  pagina_count = 1;
 
 
-    $("button").click(function()
+  //imgs = inicio();
+  var values = inicio();
+  var imgs = values[0];
+  var names = values[1];
+  console.log(imgs)
+
+
+
+    $("button").click(async function()
     {
       var name_person = document.getElementById("myText").value;
       if(name_person == "")
@@ -226,68 +284,96 @@ $(document).ready(function(){
 
       const selected = document.querySelectorAll('#cont option:checked');
       const values = Array.from(selected).map(el => el.value);
-      
-      var img_a_is_fake = "verdadeiro";
-      var img_b_is_fake = "verdadeiro";
 
-      for (var i in values) {
-        if(values[i]== 1)
-          img_a_is_fake = "falso";
-        if(values[i]== 2)
-          img_b_is_fake = "falso";
+      if(values.length != 5)
+      {
+        alert("Você precisa selecionar no mínimo 5 imagens falsas");
+        return;
       }
+
+
+
+
+      console.log("VALORES", values)
+      // for (var i in values) {
+      //   if(imgs[values[i]] <=5)
+      //     values[i] = "falso";
+      //   else
+      //     values[i] = "verdadeiro";
+      // }
     
-      console.log(img_a_is_fake, img_b_is_fake);
-
-      if(img_a == 0)  
-          img_a = "verdadeiro";
-      if(img_a == 1)  
-          img_a = "falso"; 
-      if(img_b == 0)  
-        img_b = "verdadeiro";
-      if(img_b == 1)  
-        img_b = "falso"; 
-
-
-      console.log("AS IMAGENS SÃO:");
-      console.log(img_a,img_b );
-
-      var d = new Date();
-      var h = addZero(d.getUTCHours());
-      var mi = addZero(d.getUTCMinutes());
-      var s = addZero(d.getUTCSeconds());
-
-      var n = d.getUTCDate();
-      var m = d.getUTCMonth();
-      var y = d.getUTCFullYear();
-      
-      var var_hour = h + ":" + mi + ":" + s;
-
-      var var_date = n + "/" + m + "/" + y;
-
-  
-
       console.log(values);
 
-      var url = "https://prod-106.westus.logic.azure.com:443/workflows/91cd1b5f51d3495eb58c1aa5c2b23246/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=1wcZrFofixCBnnzS5c8MdohZcQRNEvlgUI-d_QuCWP0"
+      for (var i in values) 
+      {
+         console.log("DENTRO", names[values[i]])
 
-      var xmlhttp = new XMLHttpRequest();   
-      xmlhttp.open("POST",  url, true);
-      xmlhttp.setRequestHeader("Content-Type", "application/json");
-      xmlhttp.send(JSON.stringify(
-        {
-          file_a: filename_a,
-          file_b: filename_b,  
-          file_a_type: img_a, 
-          file_b_type: img_b,
-          choice_img_a: img_a_is_fake,
-          choice_img_b: img_b_is_fake,
-          hour: var_hour,
-          date: var_date,
-          name: name_person
-        }  
-        ));
+          var d = new Date();
+          var h = addZero(d.getUTCHours());
+          var mi = addZero(d.getUTCMinutes());
+          var s = addZero(d.getUTCSeconds());
 
+          var n = d.getUTCDate();
+          var m = d.getUTCMonth();
+          var y = d.getUTCFullYear();
+          
+          var var_hour = h + ":" + mi + ":" + s;
+
+          var var_date = n + "/" + m + "/" + y;
+
+      
+          type = values[i]
+          if(type <=4)
+            type = "L3SF_V2"
+          else
+            type = "POLYU"
+
+          console.log(values);
+          var url = "https://prod-112.westus.logic.azure.com:443/workflows/718908c9837847f18977a230932f9f57/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=anxWhfMPdi3VUh4hD6pbaWZshyt5lb1QpfnW0vPQzKA"
+
+          let response = await new Promise(resolve => {
+              var xhr = new XMLHttpRequest();
+              xhr.open("POST",  url, true);
+              xhr.setRequestHeader("Content-Type", "application/json");
+              xhr.onload = function(e) {
+                resolve(xhr.response);
+              };
+              xhr.onerror = function () {
+                resolve(undefined);
+                console.error("** An error occurred during the XMLHttpRequest");
+              };
+              xhr.send(JSON.stringify(
+              {
+                file_name: names[values[i]],
+                file_type: type,  
+                hour: var_hour,
+                date: var_date,
+                name: name_person
+              }));
+          }) 
+
+
+          // var xmlhttp = new XMLHttpRequest();   
+          // xmlhttp.open("POST",  url, true);
+          // xmlhttp.setRequestHeader("Content-Type", "application/json");
+          // xmlhttp.send(JSON.stringify(
+          //   {
+          //     file_name: names[values[i]],
+          //     file_type: type,  
+          //     hour: var_hour,
+          //     date: var_date,
+          //     name: name_person
+          //   };
+
+      }
+
+    if(pagina_count == 20)
+    {
+      alert("Obrigado por participar do experimento!");
+      window.location.href = "http://www.google.com.br";
+      return;
+    }
+    pagina_count++;  
     inicio();
     } 
     );
