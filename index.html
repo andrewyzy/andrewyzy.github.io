@@ -23,7 +23,7 @@
     
     <h4>1. Análise as 10 imagens abaixo. Existem 5 impressões digitais de <b>pessoas reais</b>, e 5 impressões digitais <b>falsas</b> (geradas de forma sintética). </h4>
     <h4>2. Selecione <b>5 imagens</b> que você acredita serem <b>FALSAS</b> (sintéticas).</h4>
-    <h4>3. Após você apertar enviar, aguarde até novas imagens aparecer. Continue selecionando as falsas até concluir o experimento (10 páginas).</h4>
+    <h4>3. Após você apertar o botão "Passar página", aguarde até novas imagens aparecer. Continue selecionando as falsas até concluir o experimento (10 páginas).</h4>
 
     <p><font color="red">Você está na página <span id="pagina">1</span> de 10.</font></h4>
 
@@ -43,7 +43,7 @@
 
           </select>
           
-          <button type="button" id="botao" class="btn btn-primary btn-lg btn-block">Enviar</button>
+          <button type="button" id="botao" class="btn btn-primary btn-lg btn-block">Passar página</button>
 
 
 
@@ -123,7 +123,7 @@ function sorteio() {
 function inicio() {
 
   bt = document.querySelector('#botao');
-  bt.textContent = "Enviar";
+  bt.textContent = "Passar página";
 
   imagens = [];
   imgs = [];
@@ -317,7 +317,7 @@ $(document).ready(function(){
       }
 
       bt = document.querySelector('#botao');
-      bt.textContent = "Enviando...(aguarde)";
+      bt.textContent = "Passando a página...(aguarde)";
         
 
 
