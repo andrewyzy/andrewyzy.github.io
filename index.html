@@ -43,7 +43,7 @@
 
           </select>
           
-          <button type="button" class="btn btn-primary btn-lg btn-block">Enviar</button>
+          <button type="button" id="botao" class="btn btn-primary btn-lg btn-block">Enviar</button>
 
 
 
@@ -121,6 +121,9 @@ function sorteio() {
 }
 
 function inicio() {
+
+  bt = document.querySelector('#botao');
+  bt.textContent = "Enviar";
 
   imagens = [];
   imgs = [];
@@ -293,7 +296,7 @@ $(document).ready(function(){
 
     $("button").click(async function()
     {
-        
+
       console.log("P1:", imgs)
       //console.log("VALORES", values);
       console.log("NAMES", names);
@@ -312,6 +315,10 @@ $(document).ready(function(){
         alert("Você precisa selecionar no mínimo 5 imagens falsas");
         return;
       }
+
+      bt = document.querySelector('#botao');
+      bt.textContent = "Enviando...(aguarde)";
+        
 
 
   
