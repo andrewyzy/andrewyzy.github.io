@@ -38,12 +38,13 @@
 
 
 <div class="container-fluid">
-    <button type="button" class="btn btn-primary btn-lg btn-block">Enviar</button>
-    <br>
 
         <select id="cont" multiple="multiple" data-limit='5'>
 
           </select>
+          
+          <button type="button" class="btn btn-primary btn-lg btn-block">Enviar</button>
+
 
 
 </div>
@@ -69,6 +70,17 @@ function startTimer(duration, display) {
 }
 
 window.onload = function () {
+
+  alert("ATENÇÃO: Ao fazer julgamentos sobre essas imagens, você participa de um estudo realizado por pesquisadores da Universidade Federal da Bahia (UFBA). Se você tiver dúvidas sobre esta pesquisa, entre em contato com André Wyzykowski em andre.wyzykowski@ufba.br. Sua participação nesta pesquisa é voluntária. Você pode recusar a sua participação a qualquer momento sem consequências adversas. Seu anonimato está garantido; não recebemos nenhuma informação pessoal sobre você.");
+  imagens = [];
+  imgs = [];
+  names= [];
+  imagens_names = [];
+  name_files = [];
+  var values = inicio();
+  
+  
+
    pagina_count = 1;
   display_pagina = document.querySelector('#pagina');
 
@@ -109,6 +121,13 @@ function sorteio() {
 }
 
 function inicio() {
+
+  imagens = [];
+  imgs = [];
+  names= [];
+  imagens_names = [];
+  name_files = [];
+
   display_pagina = document.querySelector('#pagina');
   display_pagina.textContent = pagina_count;
 
@@ -118,9 +137,9 @@ function inicio() {
   var fake_path = "https://raw.githubusercontent.com/andrewyzy/experiment/master/imgs_l3sfv2/";
 
 
-  var imagens = [];
-  var imagens_names = [];
-  var name_files = [];
+  //var imagens = [];
+  //var imagens_names = [];
+  //var name_files = [];
 
 
   for (var i = 0; i <= 9; i++) {
@@ -148,10 +167,10 @@ function inicio() {
 
     imagens_names.push(img_path_2);
   }
-  console.log(imagens_names)
+  //console.log(imagens_names)
 
   var var_size = 10
-  var imgs= [];
+  //var imgs= [];
   for (var i = 0; i <= 9; i++) {
       value = Math.floor(Math.random()*var_size)+1;
       imgs[i] = imagens[value];
@@ -245,7 +264,7 @@ function inicio() {
   }
   container.imagepicker();
 
-  return [imgs, name_files];
+  return [imgs, name_files, imagens_names];
   //return imgs;
 
  }
@@ -265,15 +284,19 @@ $(document).ready(function(){
 
 
   //imgs = inicio();
-  var values = inicio();
-  var imgs = values[0];
-  var names = values[1];
-  console.log(imgs)
+  
+
+
+  //console.log("names_new", names_new);
 
 
 
     $("button").click(async function()
     {
+        
+      console.log("P1:", imgs)
+      //console.log("VALORES", values);
+      console.log("NAMES", names);
       var name_person = document.getElementById("myText").value;
       if(name_person == "")
       {
@@ -291,21 +314,18 @@ $(document).ready(function(){
       }
 
 
-
-
-      console.log("VALORES", values)
-      // for (var i in values) {
-      //   if(imgs[values[i]] <=5)
-      //     values[i] = "falso";
-      //   else
-      //     values[i] = "verdadeiro";
-      // }
-    
-      console.log(values);
-
+  
       for (var i in values) 
       {
-         console.log("DENTRO", names[values[i]])
+          var tratado = imagens_names[imgs[values[i]]]
+          //imagens_names
+          
+          console.log("Tratado", tratado);
+
+
+          name_search = imgs[parseInt(values[i])]
+         // console.log("NAME", name_search)
+         console.log("DENTRO", names[imgs[values[i]]])
 
           var d = new Date();
           var h = addZero(d.getUTCHours());
@@ -320,8 +340,8 @@ $(document).ready(function(){
 
           var var_date = n + "/" + m + "/" + y;
 
-      
-          type = values[i]
+          
+          type = imgs[values[i]]
           if(type <=4)
             type = "L3SF_V2"
           else
@@ -335,7 +355,10 @@ $(document).ready(function(){
               xhr.open("POST",  url, true);
               xhr.setRequestHeader("Content-Type", "application/json");
               xhr.onload = function(e) {
-                resolve(xhr.response);
+                //resolve(xhr.response);
+                setTimeout(() => {
+                  resolve(xhr.response);
+                }, 150);
               };
               xhr.onerror = function () {
                 resolve(undefined);
@@ -343,28 +366,95 @@ $(document).ready(function(){
               };
               xhr.send(JSON.stringify(
               {
-                file_name: names[values[i]],
-                file_type: type,  
+                file_name: name_files[imgs[values[i]]],
+                file_type: type,
+                choice: "falso",  
                 hour: var_hour,
                 date: var_date,
                 name: name_person
               }));
-          }) 
-
-
-          // var xmlhttp = new XMLHttpRequest();   
-          // xmlhttp.open("POST",  url, true);
-          // xmlhttp.setRequestHeader("Content-Type", "application/json");
-          // xmlhttp.send(JSON.stringify(
-          //   {
-          //     file_name: names[values[i]],
-          //     file_type: type,  
-          //     hour: var_hour,
-          //     date: var_date,
-          //     name: name_person
-          //   };
+          })
 
       }
+
+      const myArray = new Set(imgs);
+
+      enviou = [];
+      for (var i in values) 
+        enviou.push(parseInt(values[i]));
+
+      const toRemove = new Set(enviou);
+
+      const difference = new Set([...myArray].filter((x) => !toRemove.has(x)));
+
+      console.log("DIFF", Array.from(difference)); // ["a", "d", "e", "f"]
+
+      diff = Array.from(difference);
+
+      for (var i in diff) 
+      {
+          var tratado = imagens_names[imgs[diff[i]]]
+          //imagens_names
+          
+          console.log("Tratado", tratado);
+
+
+          name_search = imgs[parseInt(diff[i])]
+         // console.log("NAME", name_search)
+         //console.log("DENTRO", names[imgs[diff[i]]])
+
+          var d = new Date();
+          var h = addZero(d.getUTCHours());
+          var mi = addZero(d.getUTCMinutes());
+          var s = addZero(d.getUTCSeconds());
+
+          var n = d.getUTCDate();
+          var m = d.getUTCMonth();
+          var y = d.getUTCFullYear();
+          
+          var var_hour = h + ":" + mi + ":" + s;
+
+          var var_date = n + "/" + m + "/" + y;
+
+          
+          type = imgs[diff[i]]
+          if(type <=4)
+            type = "L3SF_V2"
+          else
+            type = "POLYU"
+
+          console.log(diff);
+          var url = "https://prod-112.westus.logic.azure.com:443/workflows/718908c9837847f18977a230932f9f57/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=anxWhfMPdi3VUh4hD6pbaWZshyt5lb1QpfnW0vPQzKA"
+
+          let response = await new Promise(resolve => {
+              var xhr = new XMLHttpRequest();
+              xhr.open("POST",  url, true);
+              xhr.setRequestHeader("Content-Type", "application/json");
+              xhr.onload = function(e) {
+                //resolve(xhr.response);
+                setTimeout(() => {
+                  resolve(xhr.response);
+                }, 150);
+              };
+              xhr.onerror = function () {
+                resolve(undefined);
+                console.error("** An error occurred during the XMLHttpRequest");
+              };
+              xhr.send(JSON.stringify(
+              {
+                file_name: name_files[imgs[diff[i]]],
+                file_type: type,
+                choice: "real",  
+                hour: var_hour,
+                date: var_date,
+                name: name_person
+              }));
+          })
+
+      }
+
+
+
 
     if(pagina_count == 20)
     {
